@@ -41,4 +41,25 @@ ip addr add 192.168.3.13/24 dev eth0
 # Restart SignalK to pick bind to newly added IPs
 systemctl restart signalk
 ```
+### Another solution to permanently adding additional wifi addresses
+Edit or create the file: `/etc/dhcpcd.exit-hook`
 
+```
+sudo nano /etc/dhcpcd.exit-hook
+```
+
+Then add the lines to add the additional ip addresses. Use `eth0` if your raspberry pi is using an ethernet cable or `wlan0` if your raspberry pi uses wifi to connect.
+The MFD *must* be connected to the network using an ethernet cable.  
+If you use a router with DHCP, make sure the static ip addresses you use are outside the pool of DHCP addresses.
+```
+ip addr add 10.10.10.2/24 dev wlan0
+ip addr add 10.10.10.3/24 dev wlan0
+ip addr add 10.10.10.4/24 dev wlan0
+```
+[Info about exit hook](https://wiki.archlinux.org/title/dhcpcd)
+
+You can verify the ip address has been added using:
+
+```
+ip address show
+```
